@@ -82,6 +82,12 @@ module.exports = {
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
       },
+      transitionDuration: {
+        1400: "1400ms",
+      },
+      transitionTimingFunction: {
+        smooth: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
