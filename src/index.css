@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* Selección de texto con color de marca */
+  ::selection {
+    background: #082d4f;
+    color: #f5f4f1;
+  }
+
+  /* Foco visible accesible (WCAG 2.2 AA) */
+  :focus-visible {
+    outline: 2px solid #1c64e8;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Movimiento: curva orgánica corporativa y revelado progresivo
+   (respeta prefers-reduced-motion)
+---------------------------------------------------------------- */
+:root {
+  --ease-organic: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-organic),
+    transform 0.9s var(--ease-organic);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Líneas corporativas que se dibujan al hacer scroll */
+.draw-line path,
+.draw-line polyline {
+  stroke-dasharray: var(--path-length, 1200);
+  stroke-dashoffset: var(--path-length, 1200);
+  transition: stroke-dashoffset 1.8s var(--ease-organic);
+  transition-delay: var(--draw-delay, 0ms);
+}
+
+.draw-line.is-visible path,
+.draw-line.is-visible polyline {
+  stroke-dashoffset: 0;
+}
+
+/* Subrayado de enlaces: crece desde la izquierda */
+.link-underline {
+  position: relative;
+}
+
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-organic);
+}
+
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Microinteracción de botones */
+.btn-lift {
+  transition:
+    transform 0.25s var(--ease-organic),
+    box-shadow 0.25s var(--ease-organic),
+    background-color 0.25s var(--ease-organic);
+}
+
+.btn-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px rgb(8 45 79 / 0.35);
+}
+
+.btn-lift:active {
+  transform: translateY(0);
+}
+
+/* Respeto por prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .draw-line path,
+  .draw-line polyline {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+
+  .btn-lift,
+  .link-underline::after {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
